@@ -1,12 +1,13 @@
 from app import app
 from flask import render_template, redirect, flash, url_for, session, abort
-from blog.form import SetupForm
+from blog.form import SetupForm, PostForm
 from app import db
 from author.models import Author
-from blog.models import Blog
+from blog.models import Blog, Category, Post
 from author.decorators import login_required, author_required
 import bcrypt
 from _global_constant import *
+from slugify import slugify
 
 
 @app.route('/')
@@ -71,7 +72,31 @@ def setup():
 @app.route('/post', methods=get_post)
 @author_required
 def post():
-    return 'blogpost'
+    # return 'blogpost'
+    form = PostForm()
+
+    if form.validate_on_submit():
+        if form.new_category.data:
+            new_cat = Category(form.new_category.data)
+            db.session.add(new_cat)
+            db.session.flush()
+            category = new_cat
+        elif form.category.data:
+            category_id = form.category.get_pk(form.category.data)
+            category = Category.query.filter_by(id=category_id).first()
+        else:
+            category = None
+        blog = Blog.query.first()
+        author = Author.query.filter_by(username=session['username']).first()
+        title = form.title.data
+        body = form.body.data
+        slug = slugify(title)
+        post = Post(blog, author, title, body, category, slug)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('admin'))
+
+    return render_template('blog/post.html', form=form)
 
 
 @app.route('/article')
