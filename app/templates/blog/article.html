@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}blog post{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
-{% filter markdown %}
-# ur makrdown
+    <div class="row">
+    <div class="col-md-offset-3 col-md-6">
 
-1. pt1
-1. next
-1. poste
+        <h3>{{ post.title }}</h3>
 
-{% endfilter %}
-
+        {{ post.body|markdown }}
+        <hr/>
+        <div class="text-muted">posted by <a href="#">{{ post.author.fullname }}</a>
+            on {{ post.publish_date.strftime('%Y-%m-%d') }} in <a href="#">{{ post.category.name }}</a> </div>
+{#{% filter markdown %}#}
+{## ur makrdown#}
+{##}
+{#1. pt1#}
+{#1. next#}
+{#1. poste#}
+{##}
+{#{% endfilter %}#}
+    </div>
+    </div>
 {% endblock %}

@@ -23,7 +23,8 @@ def index():
 @author_required
 def admin():
     if session.get('is_author'):
-        return render_template('blog/admin.html')
+        posts = Post.query.order_by(Post.publish_date.desc())
+        return render_template('blog/admin.html', posts=posts)
     else:
         abort(403)
 
@@ -94,12 +95,14 @@ def post():
         post = Post(blog, author, title, body, category, slug)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('admin'))
+        return redirect(url_for('article', slug=slug))
 
     return render_template('blog/post.html', form=form)
 
 
-@app.route('/article')
+@app.route('/article/<slug>')
 @login_required
-def article():
-    return render_template('blog/article.html')
+def article(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    # post = Post
+    return render_template('blog/article.html', post=post)
