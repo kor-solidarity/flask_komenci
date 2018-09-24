@@ -16,7 +16,9 @@ def index():
     blogs = Blog.query.count()
     if blogs == 0:
         return redirect(url_for('setup'))
-    return 'hi!'
+
+    posts = Post.query.order_by(Post.publish_date.desc())
+    return render_template('blog/index.html', posts=posts)
 
 
 @app.route('/admin')
