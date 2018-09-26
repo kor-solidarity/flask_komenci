@@ -3,6 +3,7 @@
 {% block title %}blog admin {% endblock %}
 {% block content %}
 <div class="row">
+    <div class="col-md-offset-3 col-md-6">
         <h3>blog admin</h3>
 
         {% with messages = get_flashed_messages() %}
@@ -13,8 +14,8 @@
                 <li> {{ msg }}</li>
                 {% endfor %}
             </ul>
-    <div class="col-md-offset-3 col-md-6">
-        </div>
+    </div>
+
         {% endif %}
         {% endwith %}
         <p>
@@ -31,7 +32,6 @@
             </div>
             {% endfor %}
         </div>
-
     </div>
 </div>
 {% endblock %}

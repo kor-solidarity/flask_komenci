@@ -13,12 +13,12 @@ from slugify import slugify
 @app.route('/')
 @app.route('/index')
 def index():
-    blogs = Blog.query.count()
-    if blogs == 0:
+    blog = Blog.query.first()
+    if not blog:
         return redirect(url_for('setup'))
 
     posts = Post.query.order_by(Post.publish_date.desc())
-    return render_template('blog/index.html', posts=posts)
+    return render_template('blog/index.html', posts=posts, blog=blog)
 
 
 @app.route('/admin')
