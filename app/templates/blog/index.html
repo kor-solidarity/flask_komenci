@@ -6,9 +6,9 @@
 
 <div class="row">
     <div class="col-md-offset-3 col-md-6">
-        <h1>{{ blog.name }}</h1>
+        <h1><a href="{{ url_for('index') }}"> {{ blog.name }}</a></h1>
         <div class="post-list">
-            {% for post in posts %}
+            {% for post in posts.items %}
             <div class="post-item">
                 <h4><a href="{{ url_for('article', slug=post.slug) }}">{{ post.title }}</a> </h4>
                 <div class="text-muted">posted by <a href="#">{{ post.author.fullname }}</a>
@@ -18,6 +18,19 @@
             </div>
             {% endfor %}
         </div>
+    <div class="post-paginate">
+        {% if posts.has_prev %}
+            <a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; newer posts</a>
+        {% else %}
+            &lt;&lt; newer posts
+        {% endif %} |
+
+        {% if posts.has_next %}
+            <a href="{{ url_for('index', page=posts.next_num) }}">older posts &gt;&gt;</a>
+        {% else %}
+            older posts &gt;&gt;
+        {% endif %}
+    </div>
     </div>
 </div>
 

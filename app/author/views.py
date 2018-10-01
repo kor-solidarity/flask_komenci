@@ -30,7 +30,7 @@ def login():
                     next = session.get('next')
                     session.pop('next')
                     return redirect(next)
-                return redirect(url_for('login_success'))
+                return redirect(url_for('index'))
             else:
                 error = '틀린암호/계정임?????'
         else:
